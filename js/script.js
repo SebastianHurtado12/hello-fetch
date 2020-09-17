@@ -2,35 +2,37 @@ document.addEventListener("DOMContentLoaded", function() {
   fetchData();
 });
 
+
 function fetchData() {
-  fetch('https://hello-database-hurtado.herokuapp.com/api/users')
+  fetch('https://hello-database.herokuapp.com/api/users')
     .then(res => res.json())
     .then(users => {
       populateTable(users);
     });
+}
 
-    function populateTable(users) {
-      for (let user of users) {
-        delete user._id;
-        delete user.__v;
-        let now = new Date();
-        user.age = now.getFullYear() - new Date(user.birthday).getFullYear();
-        let birthday = new Date(user.birthday);
-        user.birthday = birthday.toLocaleDateString('es-AR');
-        let row  = document.createElement('tr');
-        for (let key in user) {
-          let col = document.createElement('td');
-          col.innerHTML = user[key];
-          row.append(col);
-        }
-        document.getElementById('tbody').append(row);
-      }
+function populateTable(users) {
+  for (let user of users) {
+    delete user._id;
+    delete user.__v;
+    let now = new Date();
+    user.age = now.getFullYear() - new Date(user.birthday).getFullYear();
+    let birthday = new Date(user.birthday);
+    user.birthday = birthday.toLocaleDateString('es-AR');
+    let row  = document.createElement('tr');
+    for (let key in user) {
+      let col = document.createElement('td');
+      col.innerHTML = user[key];
+      row.append(col);
     }
+    document.getElementById('tbody').append(row);
+  }
+}
 
-    function fetchUser() {
-      let id = document.getElementById('userID').value;
-      if (isNaN(id)) return;
-      fetch(`https://hello-database-hurtado.herokuapp.com/api/user/${id}`)
+function fetchUser() {
+  let id = document.getElementById('userID').value;
+  if (isNaN(id)) return;
+  fetch(`https://hello-database.herokuapp.com/api/user/${id}`)
     .then(res => res.json())
     .then(user => {
       let users = [user];
